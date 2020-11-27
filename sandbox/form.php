@@ -6,8 +6,23 @@
     <title>Document</title>
     <link rel="stylesheet" href="form.css">
 </head>
-<body onload="prepareBoard()">
+<body>
+    
     <div id="grid-container">
+    <?php
+    for ($i=8; $i >= 1 ; $i--) 
+    { 
+        for ($j=65; $j <=72 ; $j++) { 
+            $id = chr($j).$i;
+            if( ($i + $j) % 2 )
+                $class = "black";
+            else 
+                $class = "white";
+            echo "<div id=\"$id\" class=\"$class\">";
+            echo "</div>";
+        }
+    }
+    ?>
     </div>
     <form action="form.php" id="moveForm" method="POST">
         <input type="hidden" name="source" id="source">
@@ -26,6 +41,7 @@
 
     ?>
     <script>
+        /*
         function prepareBoard() 
         {
             let container = document.getElementById('grid-container');
@@ -40,6 +56,7 @@
                 }
             }
         }
+        */
         function fieldClick(e) {
             let source = document.getElementById('source');
             let target = document.getElementById('target');

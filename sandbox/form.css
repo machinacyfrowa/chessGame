@@ -5,3 +5,7 @@
     border: 3px solid black;
     width: 800px;
 }
+
+div.black {
+    background-color: black;
+}
