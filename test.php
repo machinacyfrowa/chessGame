@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 $chessboard = array(
     1 => array(
         'a' => array(
