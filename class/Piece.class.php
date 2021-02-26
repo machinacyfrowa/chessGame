@@ -17,4 +17,12 @@ class Piece
         $html = "<img src=\"./img/$c/$t.png\">";
         return $html;
     }
+
+    public function getType() : string {
+        return $this->type;
+    }
+
+    public function getColor() : string {
+        return $this->color;
+    }
 }

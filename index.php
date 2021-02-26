@@ -39,7 +39,7 @@
     if (isset($_REQUEST['source']) && isset($_REQUEST['target'])) {
         $source = $_REQUEST['source'];
         $target = $_REQUEST['target'];
-        echo "<h3>Przesuwam pionek z pola $source na pole $target</h3>";
+        echo "<h3>Próbuje przesunąć pionek z pola $source na pole $target</h3>";
         $gm->movePiece($source, $target);
     }
 
