@@ -4,6 +4,9 @@ require('Piece.class.php');
 class GameManager
 {
     private $board;
+    private $turn;
+    private $timeWhite;
+    private $timeBlack;
 
     public function __construct()
     {
@@ -16,6 +19,20 @@ class GameManager
         $this->board['F8'] = new Piece('black', 'bishop');
         $this->board['D8'] = new Piece('black', 'queen');
         $this->board['E8'] = new Piece('black', 'king');
+
+        $this->board['A1'] = new Piece('white', 'rook');
+        $this->board['H1'] = new Piece('white', 'rook');
+        $this->board['B1'] = new Piece('white', 'knight');
+        $this->board['G1'] = new Piece('white', 'knight');
+        $this->board['C1'] = new Piece('white', 'bishop');
+        $this->board['F1'] = new Piece('white', 'bishop');
+        $this->board['D1'] = new Piece('white', 'queen');
+        $this->board['E1'] = new Piece('white', 'king');
+
+        $this->turn = 'white';
+        $this->timeWhite['left'] = 60*15; //15 minut
+        $this->timeBlack['left'] = 60*15; //15 minut
+        $this->timeWhite['start'] = time();
     }
     public function getBoardHTML(): string
     {
@@ -37,16 +54,46 @@ class GameManager
         return $html;
     }
     public function movePiece(string $s, string $d) { //source, destination
-        if($this->checkMove($s, $d))
+        if($this->board[$s]->getColor() == $this->turn)
         {
-            echo "Ruch legalny";
-            if(isset($this->board[$s])) {
-                $this->board[$d] = clone $this->board[$s]; //skopiuj
-                unset($this->board[$s]);
-            }
-        } 
+            if($this->checkMove($s, $d))
+            {
+                echo "Ruch legalny";
+                if(isset($this->board[$s])) {
+                    $this->board[$d] = clone $this->board[$s]; //skopiuj
+                    unset($this->board[$s]);
+
+                    if($this->turn == "white")
+                    {
+                        $this->turn = "black";
+                        $this->timeWhite['left'] -= (time() - $this->timeWhite['start']);
+                        $this->timeBlack['start'] = time();
+                    }
+                        
+                    else
+                    {
+                        $this->turn = "white";
+                        $this->timeBlack['left'] -= (time() - $this->timeBlack['start']);
+                        $this->timeWhite['start'] = time();
+                    }
+                        
+                }
+            } 
+            else 
+                echo "ruch nielegalny";
+        }
         else 
-            echo "ruch nielegalny";
+                echo "ruch nieswoim pionem";
+        
+    }
+    public function turn() : string {
+        if($this->turn == "white")
+            return "Ruch białych<br>";
+        else 
+            return "Ruch czarnych<br>";
+    }
+    public function timer() : string {
+        return "Białe: ".$this->timeWhite['left']." sekund, czarne: ".$this->timeBlack['left']." sekund.<br>";
     }
     public function checkMove(string $s, string $d) : bool {
         echo "sprawdzam ruch...";

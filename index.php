@@ -45,6 +45,9 @@
 
 
         echo $gm->getBoardHTML();
+
+        echo $gm->turn();
+        echo $gm->timer();
     ?>
     <script>
         function prepareBoard() {
