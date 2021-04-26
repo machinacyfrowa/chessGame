@@ -1,5 +1,6 @@
 <?php
 require('Piece.class.php');
+require('DB.class.php');
 
 class GameManager
 {
@@ -7,6 +8,9 @@ class GameManager
     private $turn;
     private $timeWhite;
     private $timeBlack;
+
+    private $db;
+    private $gameID;
 
     public function __construct()
     {
@@ -33,6 +37,11 @@ class GameManager
         $this->timeWhite['left'] = 60*15; //15 minut
         $this->timeBlack['left'] = 60*15; //15 minut
         $this->timeWhite['start'] = time();
+
+        $this->db = new DB();
+
+        $this->gameID = $this->db->newGame(1, 2);
+
     }
     public function getBoardHTML(): string
     {
@@ -62,7 +71,11 @@ class GameManager
                 if(isset($this->board[$s])) {
                     $this->board[$d] = clone $this->board[$s]; //skopiuj
                     unset($this->board[$s]);
+                    //zapis do bazy
+                    $this->db->saveMove($this->gameID, $s, $d, $this->board[$d]->getType());
 
+
+                    //timer
                     if($this->turn == "white")
                     {
                         $this->turn = "black";
